@@ -12,11 +12,37 @@ class LoginPage {
     this.userPasswordField = page.locator('[data-test="password"]');
     this.loginButton = page.locator('[data-test="login-button"]');
     // this.passwordFielType = page.userPasswordField.getProperty('type');
+    this.loginErrorField = page.locator('[data-test="error"]');
+    // this.loginErrorbutton = page.locator('[data-test="error"]').getByRole('button');
   }
 
   async goto() {
     await this.page.goto('https://www.saucedemo.com/');
   }
+
+  async fillUserNameField(userName) {
+    await this.userNameField.click();
+    expect(this.userNameField).toBeVisible();
+    await this.userNameField.fill(userName);
+    expect(this.userNameField).toHaveValue(userName);
+  };
+
+  async fillUserPasswordField(password) {
+    await this.userPasswordField.click();
+    expect(this.userPasswordField).toBeVisible();
+    await this.userPasswordField.fill(password);
+  };
+
+  async clickLoginButton() {
+    await this.loginButton.hover();
+    expect(this.loginButton).toBeVisible();
+    await this.loginButton.click();
+  };
+
+  async getLoginErrorMessage() {
+    return await this.loginErrorField.textContent();
+  };
+
 };
 
 export { LoginPage };
