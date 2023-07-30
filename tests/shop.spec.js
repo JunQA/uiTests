@@ -35,17 +35,18 @@ test.describe('Login page tests', () => {
         expect(errorMessagePassword).toBe('Epic sadface: Password is required');
 
         //checking the display of error with empty user name
+        await loginPage.fillUserNameField('');
         await loginPage.fillUserPasswordField(shopUserPassword);
         await loginPage.clickLoginButton();
         const errorMessageUser = await loginPage.getLoginErrorMessage();
         expect(errorMessageUser).toBe('Epic sadface: Username is required');
 
         //cheking the display of error with locked user
-        // await loginPage.fillUserNameField(shopLockedUser);
-        // await loginPage.fillUserPasswordField(shopUserPassword);
-        // await loginPage.clickLoginButton();
-        // const errorMessageLocked = await loginPage.getLoginErrorMessage();
-        // expect(errorMessageLocked).toBe('Epic sadface: Sorry, this user has been locked out.');
+        await loginPage.fillUserNameField(shopLockedUser);
+        await loginPage.fillUserPasswordField(shopUserPassword);
+        await loginPage.clickLoginButton();
+        const errorMessageLocked = await loginPage.getLoginErrorMessage();
+        expect(errorMessageLocked).toBe('Epic sadface: Sorry, this user has been locked out.');
 });
          
 });
