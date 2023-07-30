@@ -1,6 +1,5 @@
-import { expect } from'@playwright/test'; // change to import
+import { expect } from'@playwright/test';
 
-// exports.LoginPage = class LoginPage {
 class LoginPage {
 
   /**

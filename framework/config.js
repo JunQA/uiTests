@@ -1,3 +1,3 @@
-const baseURL = "https://demoqa.com/";
+const baseURL = 'https://demoqa.com/';
 
 export { baseURL };
