@@ -8,6 +8,7 @@ const currentAddress = faker.location.streetAddress();
 
 //Accepted username
 const shopUserNAme = 'standard_user';
+const shopLockedUser = 'locked_out_user';
 const shopUserPassword = 'secret_sauce';
 
-export { userName, userEmail, currentAddress, shopUserNAme, shopUserPassword };
+export { userName, userEmail, currentAddress, shopUserNAme, shopLockedUser, shopUserPassword };
