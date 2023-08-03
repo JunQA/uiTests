@@ -1,28 +1,26 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage.js';
 import { shopUserNAme, shopLockedUser, shopUserPassword } from '../framework/fixtures';
+import { InventoryPage } from '../pages/InventoryPage.js';
+import { CartPage } from '../pages/CartPage.js';
 
 test.describe('Login page tests', () => {
     test('valid authorization', async ({ page }) => {
         const loginPage = new LoginPage(page);
+        
         await loginPage.goto();
 
-         //fill in the user name field with valid data
-         await loginPage.fillUserNameField(shopUserNAme);
-         //fill in the password field with valid data
-         await loginPage.fillUserPasswordField(shopUserPassword);
-         //press the login button
-         await loginPage.clickLoginButton();
-         //check page
-         expect(page.url()).toBe('https://www.saucedemo.com/inventory.html');
-
-        // @todo add shop element check
+        //checking user authorization
+        await loginPage.fillUserNameField(shopUserNAme);
+        await loginPage.fillUserPasswordField(shopUserPassword);
+        await loginPage.clickLoginButton();
+        expect(page.url()).toBe('https://www.saucedemo.com/inventory.html');
       });
 
       test('invalid authorization', async ({ page }) => {
         const loginPage = new LoginPage(page);
-        await loginPage.goto();
 
+        await loginPage.goto();
         //checking the display of error with empty fields
         await loginPage.clickLoginButton();
         const errorMessageEmpty = await loginPage.getLoginErrorMessage();
@@ -47,6 +45,27 @@ test.describe('Login page tests', () => {
         await loginPage.clickLoginButton();
         const errorMessageLocked = await loginPage.getLoginErrorMessage();
         expect(errorMessageLocked).toBe('Epic sadface: Sorry, this user has been locked out.');
+  });      
 });
-         
+
+test.describe('Inventory page tests', () => {
+    test('add to shopping card', async ({ page }) => {
+        const loginPage = new LoginPage(page);
+        const inventoryPage = new InventoryPage(page);
+        const cartPage = new CartPage(page);
+
+        await loginPage.goto();
+        await inventoryPage.goto();
+
+        //user authorization
+        await loginPage.fillUserNameField(shopUserNAme);
+        await loginPage.fillUserPasswordField(shopUserPassword);
+        await loginPage.clickLoginButton();
+
+        //checking that the product has been added to the cart
+        await inventoryPage.clickAddToCartButton();
+        await inventoryPage.clickShoppingCartLink();
+        expect(page.url()).toBe('https://www.saucedemo.com/cart.html');
+        expect(cartPage.removeBackpack).toBeTruthy();
+  });
 });

@@ -10,9 +10,7 @@ class LoginPage {
     this.userNameField = page.locator('[data-test="username"]');
     this.userPasswordField = page.locator('[data-test="password"]');
     this.loginButton = page.locator('[data-test="login-button"]');
-    // this.passwordFielType = page.userPasswordField.getProperty('type');
     this.loginErrorField = page.locator('[data-test="error"]');
-    // this.loginErrorbutton = page.locator('[data-test="error"]').getByRole('button');
   }
 
   async goto() {
