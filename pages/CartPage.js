@@ -30,8 +30,7 @@ class CartPage {
         await this.checkoutButton.hover(); 
         expect(this.checkoutButton).toBeVisible();
       }
-
   };
   
-  export { CartPage };
+export { CartPage };
 

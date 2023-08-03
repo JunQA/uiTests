@@ -4,6 +4,12 @@ import { shopUserNAme, shopLockedUser, shopUserPassword, userName, lastName, pos
 import { InventoryPage } from '../pages/InventoryPage.js';
 import { CartPage } from '../pages/CartPage.js';
 import { CheckoutStepOnePage } from '../pages/CheckoutStepOnePage.js';
+import { CheckoutStepTwoPage } from '../pages/CheckoutStepTwoPage.js';
+import { CheckoutСompletePage } from '../pages/СheckoutСompletePage.js';
+
+test.beforeEach(async ({}, testInfo) => {
+  console.log(`Running ${testInfo.title}`);
+});
 
 test.describe('Login page tests', () => {
     test('valid authorization', async ({ page }) => {
@@ -49,16 +55,20 @@ test.describe('Login page tests', () => {
   });      
 });
 
-test.describe('Inventory page tests', () => {
+test.describe('Order tests', () => {
     test('add to shopping card', async ({ page }) => {
         const loginPage = new LoginPage(page);
         const inventoryPage = new InventoryPage(page);
         const cartPage = new CartPage(page);
         const checkoutStepOnePage = new CheckoutStepOnePage(page);
+        const checkoutStepTwoPage = new CheckoutStepTwoPage(page);
+        const checkoutСompletePage = new CheckoutСompletePage(page);
         
         await loginPage.goto();
         await inventoryPage.goto();
         await checkoutStepOnePage.goto();
+        await checkoutStepTwoPage.goto();
+        await checkoutСompletePage.goto();
     
         //user authorization
         await loginPage.fillUserNameField(shopUserNAme);
@@ -77,33 +87,28 @@ test.describe('Inventory page tests', () => {
         await cartPage.checkoutButton.click();
         expect(page.url()).toBe('https://www.saucedemo.com/checkout-step-one.html');
 
-        // checking that the buyer's information is being filled in
+        //checking that the buyer's information is being filled in
         await checkoutStepOnePage.fillFirstNameField(userName);
         await checkoutStepOnePage.fillLastNameField(lastName);
         await checkoutStepOnePage.fillPostalCodeField(postalCode);
-        await checkoutStepOnePage.continueButton.click();
+        await checkoutStepOnePage.clickContinueButton();
         expect(page.url()).toBe('https://www.saucedemo.com/checkout-step-two.html');
+
+        //checking that the button is pressed messages are displayed
+        await checkoutStepTwoPage.clickFinishButtone();
+        expect(page.url()).toBe('https://www.saucedemo.com/checkout-complete.html');
+        expect(checkoutСompletePage.thankYouMessage).toBeTruthy();
+        expect(checkoutСompletePage.checkoutCompleteMessage).toBeTruthy();
+
+        //checking that the button is pressed the transition to the main page
+        await checkoutСompletePage.clickBackToProductsButtone();
+        expect(page.url()).toBe('https://www.saucedemo.com/inventory.html');
   });
 });
 
-// test.describe('Checkout page tests', () => {
-//   test('fill in the information about the buyer', async ({ page }) => {
-//       const checkoutStepOnePage = new CheckoutStepOnePage(page);
-//       // const loginPage = new LoginPage(page);
+test.afterEach(async ({ page }, testInfo) => {
+  console.log(`Finished ${testInfo.title} with status ${testInfo.status}`);
 
-//       await checkoutStepOnePage.goto();
-//       // await loginPage.goto();
-      
-//       //user authorization
-//       // await loginPage.fillUserNameField(shopUserNAme);
-//       // await loginPage.fillUserPasswordField(shopUserPassword);
-//       // await loginPage.clickLoginButton();
-
-//       // checking that the buyer's information is being filled in
-//       await checkoutStepOnePage.fillFirstNameField(userName);
-//       await checkoutStepOnePage.fillLastNameField(lastName);
-//       await checkoutStepOnePage.fillPostalCodeField(postalCode);
-//       await checkoutStepOnePage.checkoutButton.click();
-//       expect(page.url()).toBe('https://www.saucedemo.com/checkout-step-two.html');
-//   });
-// });
+  if (testInfo.status !== testInfo.expectedStatus)
+    console.log(`Did not run as expected, ended up at ${page.url()}`);
+});

@@ -28,5 +28,5 @@ class InventoryPage {
     }
   };
   
-  export { InventoryPage };
+export { InventoryPage };
 
