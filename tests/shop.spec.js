@@ -1,8 +1,9 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage.js';
-import { shopUserNAme, shopLockedUser, shopUserPassword } from '../framework/fixtures';
+import { shopUserNAme, shopLockedUser, shopUserPassword, userName, lastName, postalCode } from '../framework/fixtures';
 import { InventoryPage } from '../pages/InventoryPage.js';
 import { CartPage } from '../pages/CartPage.js';
+import { CheckoutStepOnePage } from '../pages/CheckoutStepOnePage.js';
 
 test.describe('Login page tests', () => {
     test('valid authorization', async ({ page }) => {
@@ -53,10 +54,12 @@ test.describe('Inventory page tests', () => {
         const loginPage = new LoginPage(page);
         const inventoryPage = new InventoryPage(page);
         const cartPage = new CartPage(page);
-
+        const checkoutStepOnePage = new CheckoutStepOnePage(page);
+        
         await loginPage.goto();
         await inventoryPage.goto();
-
+        await checkoutStepOnePage.goto();
+    
         //user authorization
         await loginPage.fillUserNameField(shopUserNAme);
         await loginPage.fillUserPasswordField(shopUserPassword);
@@ -67,5 +70,40 @@ test.describe('Inventory page tests', () => {
         await inventoryPage.clickShoppingCartLink();
         expect(page.url()).toBe('https://www.saucedemo.com/cart.html');
         expect(cartPage.removeBackpack).toBeTruthy();
+        expect(cartPage.continueShoppingButton).toBeTruthy();
+        expect(cartPage.checkoutButton).toBeTruthy();
+
+        //continue next step
+        await cartPage.checkoutButton.click();
+        expect(page.url()).toBe('https://www.saucedemo.com/checkout-step-one.html');
+
+        // checking that the buyer's information is being filled in
+        await checkoutStepOnePage.fillFirstNameField(userName);
+        await checkoutStepOnePage.fillLastNameField(lastName);
+        await checkoutStepOnePage.fillPostalCodeField(postalCode);
+        await checkoutStepOnePage.continueButton.click();
+        expect(page.url()).toBe('https://www.saucedemo.com/checkout-step-two.html');
   });
 });
+
+// test.describe('Checkout page tests', () => {
+//   test('fill in the information about the buyer', async ({ page }) => {
+//       const checkoutStepOnePage = new CheckoutStepOnePage(page);
+//       // const loginPage = new LoginPage(page);
+
+//       await checkoutStepOnePage.goto();
+//       // await loginPage.goto();
+      
+//       //user authorization
+//       // await loginPage.fillUserNameField(shopUserNAme);
+//       // await loginPage.fillUserPasswordField(shopUserPassword);
+//       // await loginPage.clickLoginButton();
+
+//       // checking that the buyer's information is being filled in
+//       await checkoutStepOnePage.fillFirstNameField(userName);
+//       await checkoutStepOnePage.fillLastNameField(lastName);
+//       await checkoutStepOnePage.fillPostalCodeField(postalCode);
+//       await checkoutStepOnePage.checkoutButton.click();
+//       expect(page.url()).toBe('https://www.saucedemo.com/checkout-step-two.html');
+//   });
+// });

@@ -18,15 +18,15 @@ class LoginPage {
   }
 
   async fillUserNameField(userName) {
-    await this.userNameField.click();
     expect(this.userNameField).toBeVisible();
+    await this.userNameField.click();
     await this.userNameField.fill(userName);
     expect(this.userNameField).toHaveValue(userName);
   };
 
   async fillUserPasswordField(password) {
-    await this.userPasswordField.click();
     expect(this.userPasswordField).toBeVisible();
+    await this.userPasswordField.click();
     await this.userPasswordField.fill(password);
   };
 

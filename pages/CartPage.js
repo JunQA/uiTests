@@ -8,6 +8,8 @@ class CartPage {
     constructor(page) {
       this.page = page;
       this.removeBackpack = page.locator('[data-test="remove-sauce-labs-backpack"]');
+      this.continueShoppingButton = page.locator('[data-test="continue-shopping"]');
+      this.checkoutButton = page.locator('[data-test="checkout"]');
     }
   
     async goto() {
@@ -18,6 +20,17 @@ class CartPage {
       await this.removeBackpack.hover(); 
       expect(this.removeBackpack).toBeVisible();
     }
+
+    async continueShoppingButton() {
+      await this.continueShoppingButton.hover(); 
+      expect(this.continueShoppingButton).toBeVisible();
+    }
+
+    async checkoutButton() {
+        await this.checkoutButton.hover(); 
+        expect(this.checkoutButton).toBeVisible();
+      }
+
   };
   
   export { CartPage };
