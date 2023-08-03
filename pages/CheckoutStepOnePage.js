@@ -44,12 +44,11 @@ class CheckoutStepOnePage {
       expect(this.cancelButton).toBeVisible();
     }
 
-    async continueButton() {
+    async clickContinueButton() {
         await this.continueButton.hover(); 
         expect(this.continueButton).toBeVisible();
         await this.continueButton.click();
       }
-
   };
   
-  export { CheckoutStepOnePage };
+export { CheckoutStepOnePage };

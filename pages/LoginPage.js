@@ -22,24 +22,23 @@ class LoginPage {
     await this.userNameField.click();
     await this.userNameField.fill(userName);
     expect(this.userNameField).toHaveValue(userName);
-  };
+  }
 
   async fillUserPasswordField(password) {
     expect(this.userPasswordField).toBeVisible();
     await this.userPasswordField.click();
     await this.userPasswordField.fill(password);
-  };
+  }
 
   async clickLoginButton() {
     await this.loginButton.hover();
     expect(this.loginButton).toBeVisible();
     await this.loginButton.click();
-  };
+  }
 
   async getLoginErrorMessage() {
     return await this.loginErrorField.textContent();
-  };
-
+  }
 };
 
 export { LoginPage };
