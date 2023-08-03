@@ -4,8 +4,7 @@
 JS, Playwright, Faker, GitHub Actions + playwright report
 
 ### Запуск
-npm i
-npm playwright install
-npx playwright test shop.spec.js 
-или
-npx playwright test shop.spec.js  --ui
+* npm i
+* npm playwright install
+* npx playwright test shop.spec.js 
+* npx playwright test shop.spec.js  --ui
